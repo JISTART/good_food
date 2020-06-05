@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script>
+        var arr = [];
+        var input_string = "";
+        var tag_string = "";
+        window.onload = function () {
+            // var input_form = document.querySelector('.dropdown-trigger > input[type=text]');
+            api_select_words();
+            // input_form.addEventListener('keydown',function(){
+            // console.log(input_form.value);
+            // if(input_form.value != ""){
+            // api_select_words(input_form.value);
+            // input_dropdown_toggle(); 
+            // }
+            // })
+            document.querySelector('input[list="tags"]').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    console.log(e)
+                    input_dropdown_words_click(e.target.value);
+                    e.target.value = '';
+                }
+            })
+        }
+        // document.querySelector('input[list="tags"]').addEventListener('input',function(){
+        // console.log(1111); 
+        // })
+
+        const api_select_words = () => {
+            fetch('http://localhost:8080/test').then(function (response) {
+                response.text().then(function (text) {
+                    var json = JSON.parse(text);
+                    arr = json.map(item => item.tagName);
+                    input_dropdown_words_set();
+                })
+            })
+        }
+
+        // const api_select_words = (value) => {
+        // var searchVO = {
+        // tagName: value
+        // }
+
+        // fetch('http://localhost:8080/select_words',{
+        // method: 'POST',
+        // headers: {
+        // 'Content-Type':'application/json; charset=utf-8'
+        // },
+        // body : 
+        // JSON.stringify(searchVO) 
+
+        // }).then(function(response) {
+        // response.text().then(function(text){
+        // var json = JSON.parse(text);
+        // arr = json.map(item =>item.tagName);
+        // input_dropdown_words_set();
+
+        // })
+        // }) 
+        // }
+        const input_dropdown_words_set = () => {
+            var datalist_words = document.querySelector('#tags');
+            arr.forEach((item, index) => {
+                var option_word = document.createElement('option');
+                option_word.value = item;
+                option_word.innerHTML = item;
+                option_word.addEventListener("click", function () {
+                    // input_dropdown_words_click(item);
+                    console.log(11111)
+                });
+                datalist_words.appendChild(option_word);
+            })
+
+            // var html_a = "";
+            // arr.forEach((item,index) => {
+            // html_a += '<a class="dropdown-item" id="word_'+index+'" onclick="input_dropdown_words_click('+index+');">';
+            // html_a += ''+item+'';
+            // html_a += '</a>';
+            // })
+            // var input_dropdown_content = document.querySelector('.dropdown-content');
+            // input_dropdown_content.innerHTML = html_a;
+        }
+        const input_dropdown_words_click = (item) => {
+            console.log(1111)
+            var box_form = document.querySelector('#tag_string');
+            console.log(box_form);
+            tag_string += '<span class="tag is-black">' + item + '</span> ; ;';
+            box_form.innerHTML = tag_string;
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <section class="hero notification">
+            <div class="hero-head">
+                <nav class="level">
+                    <!-- Left side -->
+                    <div class="level-left">
+                        <div class="level-item">
+                            <p class="subtitle is-2">
+                                <strong>SIK</strong> 4
+                            </p>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>
+        <section class="hero notification is-primary is-light ">
+            <div class="hero-head">
+                <nav class="level">
+                    <div class="level-item">
+                        <div class="level-center">
+                            <p class="level-item"><a href="/components/search.html" class="button is-danger">검색</a></p>
+                        </div>
+                        <div class="level-center">
+                            <p class="level-item"><a href="/components/save.html" class="button is-success">등록</a></p>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="hero-body">
+                <nav class="level">
+                    <div class="level-item" id="tag_string">
+                        <!-- <span class="tag is-black">asas</span> -->
+                    </div>
+                </nav>
+                <nav class="level">
+                    <div class="level-item">
+                        <div class="level-center">
+                            <input class="input" type="text" placeholder="Text input" style="width:750px;" list="tags">
+                            <datalist id="tags">
+
+                            </datalist>
+                        </div>
+                        <div class="level-center">
+                            <p class="level-item"><a class="button is-light">추가</a></p>
+                        </div>
+                        <div class="level-center">
+                            <p class="level-item"><a class="button is-dark">검색</a></p>
+                        </div>
+                    </div>
+                </nav>
+                <nav class="level ">
+                    <div class="level-item">
+                        <div class="level-center">
+                            <!--행 시작-->
+                            <div class="columns is-mobile">
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--행 끝-->
+                            <!--행 시작-->
+                            <div class="columns is-mobile ">
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="column is-one-quarter">
+                                    <div class="card">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                                업체명
+                                            </p>
+                                        </header>
+                                        <div class="card-content">
+                                            <div class="content">
+                                                서울특별시 강남구 삼일프라자<br />
+                                                <a href="#">#중국집</a> <a href="#">#짜장면</a> <a href="#">#맛집</a>
+
+                                            </div>
+                                        </div>
+                                        <footer class="card-footer level">
+                                            <div class="level-item">
+                                                <div class="level-center">
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                    <span class="icon has-text-success">
+                                                        <i class="fas fa-check-square"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </footer>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--행 끝-->
+
+                            <!-- 페이징-->
+                            <nav class="pagination" role="navigation" aria-label="pagination">
+                                <ul class="pagination-list">
+                                    <li>
+                                        <a class="pagination-link is-current " aria-label="Page 1"
+                                            aria-current="page">1</a>
+                                    </li>
+                                    <li>
+                                        <a class="pagination-link" aria-label="Goto page 2">2</a>
+                                    </li>
+                                    <li>
+                                        <a class="pagination-link" aria-label="Goto page 3">3</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                </nav>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>
