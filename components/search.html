@@ -11,6 +11,7 @@
         var arr = [];
         var input_string = "";
         var tag_string = "";
+        var tag_string1 = "";
         window.onload = function () {
             // var input_form = document.querySelector('.dropdown-trigger > input[type=text]');
             api_select_words();
@@ -91,7 +92,7 @@
             console.log(1111)
             var box_form = document.querySelector('#tag_string');
             console.log(box_form);
-            tag_string += '<span class="tag is-black">' + item + '</span> ; ;';
+            tag_string += '<span class="tag is-black">' + item + '</span>&nbsp;&nbsp;';
             box_form.innerHTML = tag_string;
         }
     </script>
