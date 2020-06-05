@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="/common.css" />
+    <script>
+        function onclickSave() {
+            console.log(document.querySelector('.startRadio__box input:checked + .startRadio__img'));
+            if (document.querySelector('.startRadio__box input:checked + .startRadio__img') == null) {
+                alert("별점 체크 할 것");
+            } else {
+                alert(document.querySelector('.startRadio__box input:checked + .startRadio__img').textContent);
+            }
+            fetch('http://localhost:8080').then(function (response) {
+                response.text().then(function (text) {
+                    alert(text);
+                })
+            })
+        }
+        function changeColor() {
+            var box = document.getElementById("mybox");
+            box.style['backgroundColor'] = "yellow";
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+
+        <section class="hero notification">
+            <div class="hero-head">
+                <nav class="level">
+                    <!-- Left side -->
+                    <div class="level-left">
+                        <div class="level-item">
+                            <p class="subtitle is-2">
+                                <strong>SIK</strong> 4
+                            </p>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>
+        <section class="hero notification is-primary is-light ">
+            <div class="hero-head">
+                <nav class="level">
+                    <div class="level-item">
+                        <div class="level-center">
+                            <p class="level-item"><a href="/components/search.html" class="button is-danger">검색</a></p>
+                        </div>
+                        <div class="level-center">
+                            <p class="level-item"><a href="/components/save.html" class="button is-success">등록</a></p>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="hero-body">
+                <div class="columns is-gapless is-multiline">
+                    <div class="column is-full">
+                        <nav class="level">
+                            <div class="level-item">
+                                <div class="level-center">
+                                    <p class="title is-4 is-center">
+                                        <strong class="has-text-black">카테고리 선택</strong>
+                                    </p>
+                                    <div class="control" style="width: 750px;">
+                                        <label class="radio">
+                                            <input type="radio" name="foobar" checked>
+                                            음식점
+                                        </label>
+                                        <label class="radio">
+                                            <input type="radio" name="foobar">
+                                            카페
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                        <nav class="level">
+                            <div class="level-item">
+                                <div class="level-center">
+                                    <p class="title is-4">
+                                        <strong class="has-text-black">업체명</strong>
+                                    </p>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Text input" style="width: 750px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                        <nav class="level">
+                            <div class="level-item">
+                                <div class="level-center">
+                                    <p class="title is-4">
+                                        <strong class="has-text-black">주소</strong>
+                                    </p>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Text input" style="width: 750px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                        <nav class="level">
+                            <div class="level-item">
+                                <div class="level-center">
+                                    <p class="title is-4">
+                                        <strong class="has-text-black">태그 </strong>
+                                    </p>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Text input" style="width: 750px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+
+                        <nav class="level">
+                            <div class="level-item ">
+                                <div class="level-center">
+                                    <p class="title is-4">
+                                        <strong class="has-text-black">별점 </strong>
+                                    </p>
+                                    <div class="startRadio">
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">0.5</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">1</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">1.5</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">2</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">2.5</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">3</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">3.5</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">4</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">4.5</span></span>
+                                        </label>
+                                        <label class="startRadio__box">
+                                            <input type="radio" name="star" id="">
+                                            <span class="startRadio__img"><span class="blind">5</span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="hero-body">
+                <nav class="level">
+                    <div class="level-item">
+                        <div class="level-center">
+                            <p class="level-item"><a onclick="onclickSave();" class="button is-link">등록</a></p>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </section>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"> 
+    <title> HTML 기본 구조 </title>
+    <script type="text/javascript">
+        function test() {
+            var xmlhttp;  
+            if (window.XMLHttpRequest) {  
+                xmlhttp = new XMLHttpRequest();
+            } 
+            else {  
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            // xmlhttp.setRequestHeader("Authorization", "Basic " + btoa(user + ":" + pass));
+            // xmlhttp.setRequestHeader('Content-Type','application/json'); 
+            xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+            xmlhttp.setRequestHeader('Access-Control-Allow-Credential','true');
+            //Ajax구현부분
+            xmlhttp.onreadystatechange = function() {  
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    //통신 성공시 구현부분
+                    // document.getElementById("demo").innerHTML =
+                    // this.responseText;   
+                    alert("success!!")
+                }
+            }
+            xmlhttp.open("GET", "http://localhost:8080/test",true);  
+            xmlhttp.send();
+        }
+    </script>    
+</head>
+<body>
+    <button onclick="javascript:test();">click!!!!</button>
+    <div id="demo">
+        before => change data
+    </div>
+</body>
+</html>

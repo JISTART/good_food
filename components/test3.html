@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script>
+        window.onload = function() {
+            document.getElementById('header').onclick = function(e) {
+                this.style.color = 'orange';    
+            }
+            var buttonA = document.getElementById('button-a');
+            var buttonB = document.getElementById('button-b');
+            var counterA = document.getElementById('counter-a');
+            var counterB = document.getElementById('counter-b');
+
+            buttonA.onclick = function() {
+                counterA.innerHTML = Number(counterA.innerHTML)+1;
+            }
+            buttonB.onclick = function() {
+                counterB.innerHTML = Number(counterB.innerHTML)+1;
+                counterA.innerHTML = Number(counterA.innerHTML)+1;
+                console.log(counterA)
+            }
+
+            // document.getElementById('my-form').onsubmit = function() {
+            //     var pass = document.getElementById('pass').value;
+            //     var passCheck = document.getElementById('pass-check').value;
+
+            //     if(pass === passCheck) {
+            //         alert('success');
+            //     }else{
+            //         alert('fail');
+            //     }
+            //     return false;
+            // }
+        }
+        function whenSubmit() {
+            alert("wherSubmit()")
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <h1 id="header">Click</h1>
+
+    <button id="button-a">Button A</button>
+    <button id="button-b">Button B</button>
+    <h1>Button A - <span id="counter-a">0</span></h1>
+    <h1>Button B - <span id="counter-b">0</span></h1>
+
+    <form id="my-form" onsubmit="return whenSubmit()">
+        <label for="name">이름</label>
+        <input type="text" name="name" id="name"/>
+        <label for="pass">비번</label>
+        <input type="password" name="pass" id="pass"/>
+        <label for="pass-check">비번확인</label>
+        <input type="password" name="pass-check" id="pass-check"/>
+        <input type="submit" value="제출" />
+    </form>
+</body>
+</html>

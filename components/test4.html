@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <script>
+        // 이벤트 리스너
+        // window.onload = function() {
+        //     document.getElementById('header').onclick = function() {
+        //         alert('header');
+        //     }
+        //     document.getElementById('paragraph').onclick = function(e) {
+        //         alert('paragraph');
+        //         var event = e || window.event;
+        //         event.cancelBubble  = true;
+        //         // if(event.stopPropagation){
+        //         //     event.stopPropagation();
+        //         // }
+        //     }
+        // }
+        var flag = true;
+        window.onload = function () {
+            var header = document.getElementById('my-header');
+            var body = document.getElementById('my-body');
+            var headerListener = function () {
+                this.innerHTML+= '+';
+                
+            }
+
+            header.addEventListener('click', headerListener);
+            body.addEventListener('click', function() {
+                console.log(flag)
+                flag ? header.addEventListener('click',headerListener) : header.removeEventListener('click',headerListener);
+                flag = !flag;
+            });
+        }
+        
+    </script>
+</head>
+<body>
+    <h1>
+        <p id="my-header">header</p>
+        <p id="my-body">body</p>
+    </h1>
+
+</body>
+</html>
