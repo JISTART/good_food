@@ -11,7 +11,7 @@
         var arr = [];
         var input_string = "";
         var tag_string = "";
-        var tag_string1 = "";
+        var tag_arr = [];
         window.onload = function () {
             // var input_form = document.querySelector('.dropdown-trigger > input[type=text]');
             api_select_words();
@@ -88,12 +88,14 @@
             // var input_dropdown_content = document.querySelector('.dropdown-content');
             // input_dropdown_content.innerHTML = html_a;
         }
-        const input_dropdown_words_click = (item) => {
-            console.log(1111)
+        const input_dropdown_words_click = () => {
+            var input_value = document.querySelector('input[list="tags"]').value;
             var box_form = document.querySelector('#tag_string');
             console.log(box_form);
-            tag_string += '<span class="tag is-black">' + item + '</span>&nbsp;&nbsp;';
+            tag_string += '<span class="tag is-black">' + input_value + '</span>    <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>&nbsp;&nbsp;';
             box_form.innerHTML = tag_string;
+            tag_arr.push = input_value;
+            console.log(tag_arr);
         }
     </script>
 </head>
@@ -142,7 +144,7 @@
                             </datalist>
                         </div>
                         <div class="level-center">
-                            <p class="level-item"><a class="button is-light">추가</a></p>
+                            <p class="level-item"><a class="button is-light" onclick=input_dropdown_words_click();>추가</a></p>
                         </div>
                         <div class="level-center">
                             <p class="level-item"><a class="button is-dark">검색</a></p>
