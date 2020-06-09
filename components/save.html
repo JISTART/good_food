@@ -10,17 +10,41 @@
     <link rel="stylesheet" href="/common.css" />
     <script>
         function onclickSave() {
-            console.log(document.querySelector('.startRadio__box input:checked + .startRadio__img'));
+            var insertUrl = 'http://localhost:8080/insert';
             if (document.querySelector('.startRadio__box input:checked + .startRadio__img') == null) {
                 alert("별점 체크 할 것");
-            } else {
-                alert(document.querySelector('.startRadio__box input:checked + .startRadio__img').textContent);
+                return false;
             }
-            fetch('http://localhost:8080').then(function (response) {
-                response.text().then(function (text) {
-                    alert(text);
-                })
+
+            var cate = document.getElementsByName('storeCate');
+            var storeCate;
+            for (var i = 0; i < cate.length; i++) {
+                if (cate[i].checked) {
+                    storeCate = cate[i].value;
+                }
+            }
+            var storeName = document.getElementById('storeName').value;
+            var storeAddr = document.getElementById('storeAddr').value;
+            var storeTag = document.getElementById('storeTag').value;
+            var storeStar = document.querySelector('.startRadio__box input:checked + .startRadio__img').textContent;
+
+            var json_data = { storeCate: storeCate, storeName: storeName, storeAddr: storeAddr, storeTag: storeTag, storeStar: storeStar };
+
+            fetch(insertUrl, {
+                method: 'POST',
+                body: JSON.stringify(json_data),
+                headers: { 'Content-Type': 'application/json' }
             })
+                .then(response => {
+                    if (response.status == 200) {
+                        alert('등록되었습니다');
+                        history.back(-1);
+                    } else {
+                        alert('등록실패하였습니다.');
+                        history.back(-1);
+                    }
+                })
+                .catch(error => console.log('Error:', error));
         }
         function changeColor() {
             var box = document.getElementById("mybox");
@@ -32,7 +56,6 @@
 
 <body>
     <div class="container">
-
         <section class="hero notification">
             <div class="hero-head">
                 <nav class="level">
@@ -40,14 +63,14 @@
                     <div class="level-left">
                         <div class="level-item">
                             <p class="subtitle is-2">
-                                <strong>SIK</strong> 4
+                                <strong>GOOD FOOD</strong>
                             </p>
                         </div>
                     </div>
                 </nav>
             </div>
         </section>
-        <section class="hero notification is-primary is-light ">
+        <section class="hero notification is-white is-light ">
             <div class="hero-head">
                 <nav class="level">
                     <div class="level-item">
@@ -71,11 +94,11 @@
                                     </p>
                                     <div class="control" style="width: 750px;">
                                         <label class="radio">
-                                            <input type="radio" name="foobar" checked>
+                                            <input type="radio" name="storeCate" value="1" checked>
                                             음식점
                                         </label>
                                         <label class="radio">
-                                            <input type="radio" name="foobar">
+                                            <input type="radio" name="storeCate" value="2">
                                             카페
                                         </label>
                                     </div>
@@ -89,7 +112,8 @@
                                         <strong class="has-text-black">업체명</strong>
                                     </p>
                                     <div class="control">
-                                        <input class="input" type="text" placeholder="Text input" style="width: 750px;">
+                                        <input class="input" type="text" name="storeName" id="storeName"
+                                            placeholder="Text input" style="width: 750px;">
                                     </div>
                                 </div>
                             </div>
@@ -101,7 +125,8 @@
                                         <strong class="has-text-black">주소</strong>
                                     </p>
                                     <div class="control">
-                                        <input class="input" type="text" placeholder="Text input" style="width: 750px;">
+                                        <input class="input" type="text" name="storeAddr" id="storeAddr"
+                                            placeholder="Text input" style="width: 750px;">
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +138,8 @@
                                         <strong class="has-text-black">태그 </strong>
                                     </p>
                                     <div class="control">
-                                        <input class="input" type="text" placeholder="Text input" style="width: 750px;">
+                                        <input class="input" type="text" name="storeTag" id="storeTag"
+                                            placeholder="Text input" style="width: 750px;">
                                     </div>
                                 </div>
                             </div>
@@ -172,8 +198,6 @@
                         </nav>
                     </div>
                 </div>
-
-
             </div>
             <div class="hero-body">
                 <nav class="level">
