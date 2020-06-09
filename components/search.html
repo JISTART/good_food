@@ -10,7 +10,6 @@
     <script>
         var arr = [];
         var input_string = "";
-        var tag_string = "";
         var tag_arr = [];
         window.onload = function () {
             // var input_form = document.querySelector('.dropdown-trigger > input[type=text]');
@@ -23,10 +22,19 @@
             // }
             // })
             document.querySelector('input[list="tags"]').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && e.target.value !=="") {
                     console.log(e)
                     input_dropdown_words_click(e.target.value);
                     e.target.value = '';
+                }
+            })
+            document.querySelector('#tag_add').addEventListener('click', function (e) {
+                var input_form = document.querySelector('input[list="tags"]');
+                console.log(input_form.value);
+                if(input_form.value !== ""){
+                        console.log(e)
+                        input_dropdown_words_click(input_form.value);
+                        input_form.value = ''; 
                 }
             })
         }
@@ -88,14 +96,59 @@
             // var input_dropdown_content = document.querySelector('.dropdown-content');
             // input_dropdown_content.innerHTML = html_a;
         }
-        const input_dropdown_words_click = () => {
-            var input_value = document.querySelector('input[list="tags"]').value;
+        const input_dropdown_words_click = (value) => {
+            var input_form = document.querySelector('input[list="tags"]');
             var box_form = document.querySelector('#tag_string');
-            console.log(box_form);
-            tag_string += '<span class="tag is-black">' + input_value + '</span>    <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>&nbsp;&nbsp;';
-            box_form.innerHTML = tag_string;
-            tag_arr.push = input_value;
-            console.log(tag_arr);
+            var tags_string = "";
+            var exist_flag = false;
+            exist_flag = check_tag_exist(value);
+            if(!exist_flag){
+                return false;   
+            }
+            if(tag_arr.length == 4){
+                alert("태그는 4개까지만 등록 가능합니다.");
+                return false;
+            }
+            tag_arr.push(input_form.value);
+            tag_arr.forEach(item => {
+                var tag_string = "";
+                tag_string += '<div>';
+                tag_string += '<span class="tag is-black" id="delete_tag">' + item + '</span>';
+                tag_string += '<span class="icon is-small">';
+                tag_string += '<button class="delete" aria-label="close" onclick="delete_tag_word(\''+item+'\');">';
+                tag_string += '</button>';
+                tag_string += '</span>&nbsp;&nbsp';
+                tag_string += '</div>';
+
+                tags_string += tag_string;
+            })
+            box_form.innerHTML=tags_string;
+            input_form.value = "";
+        }
+        const check_tag_exist = (value) => {
+            var flag = true;
+            tag_arr.forEach(item => {
+                if(item === value){
+                    alert("이미 등록된 태그입니다.")
+                    flag = false;       
+                }
+            })
+            return flag;
+        }
+        const delete_tag_word = (value) => {
+            tag_arr = tag_arr.filter(item => item!==value);
+            var delete_divs = document.querySelectorAll('#delete_tag');
+            console.log(delete_divs);
+            delete_divs.forEach((item,index,array)=>{
+                var delete_div = item.parentElement
+                var tag_string_div = document.querySelector('#tag_string');
+                
+                if(item.textContent == value){
+                    tag_string_div.removeChild(delete_div);
+                    console.log(tag_arr);
+                }
+            })
+ 
         }
     </script>
 </head>
@@ -144,7 +197,8 @@
                             </datalist>
                         </div>
                         <div class="level-center">
-                            <p class="level-item"><a class="button is-light" onclick=input_dropdown_words_click();>추가</a></p>
+                            <!-- <p class="level-item"><a class="button is-light" onclick=input_dropdown_words_click();>추가</a></p> -->
+                            <p class="level-item"><a class="button is-light" id="tag_add">추가</a></p>
                         </div>
                         <div class="level-center">
                             <p class="level-item"><a class="button is-dark">검색</a></p>
