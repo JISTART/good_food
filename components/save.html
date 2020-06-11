@@ -9,12 +9,100 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href="/common.css" />
     <script>
-        function onclickSave() {
-            var insertUrl = 'http://localhost:8080/insert';
-            if (document.querySelector('.startRadio__box input:checked + .startRadio__img') == null) {
-                alert("별점 체크 할 것");
+
+        var arr = [];
+        var tag_arr = [];
+        var tag_string = "";
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            api_select_words();
+            document.querySelector('input[list="tags"]').addEventListener('keypress', function (e) {
+                if (e.key == 'Enter' && e.target.value != "") {
+                    input_dropdown_words_click(e.target.value);
+                    e.target.value = '';
+                }
+            })
+        })
+
+        const api_select_words = () => {
+            fetch('http://localhost:8080/test').then(function (response) {
+                response.text().then(function (text) {
+                    var json = JSON.parse(text);
+                    arr = json.map(item => item.tagName);
+                    input_dropdown_words_set();
+                })
+            })
+        }
+
+        const input_dropdown_words_set = () => {
+            var datalist_words = document.querySelector('#tags');
+            arr.forEach((item, index) => {
+                var option_word = document.createElement('option');
+                option_word.value = item;
+                option_word.innerHTML = item;
+                option_word.addEventListener("click", function () {
+                });
+                datalist_words.appendChild(option_word);
+            })
+        }
+
+        const input_dropdown_words_click = (value) => {
+            var input_form = document.querySelector('input[list="tags"]');
+            var box_form = document.querySelector('#tag_string');
+            var tags_string = "";
+            var exist_flag = false;
+            exist_flag = check_tag_exist(value);
+
+            if (!exist_flag) {
                 return false;
             }
+            if (tag_arr.length == 4) {
+                alert("태그는 4개까지만 등록 가능합니다.");
+                return false;
+            }
+            tag_arr.push(input_form.value);
+            tag_arr.forEach(item => {
+                var tag_string = "";
+                tag_string += '<div>';
+                tag_string += '<span class="tag is-black" id="delete_tag">' + item + '</span>';
+                tag_string += '<span class="icon is-small">';
+                tag_string += '<button class="delete" aria-label="close" onclick="delete_tag_word(\'' + item + '\');">';
+                tag_string += '</button>';
+                tag_string += '</span>&nbsp;&nbsp';
+                tag_string += '</div>';
+
+                tags_string += tag_string;
+            })
+            box_form.innerHTML = tags_string;
+            input_form.value = "";
+        }
+
+        const check_tag_exist = (value) => {
+            var flag = true;
+            tag_arr.forEach(item => {
+                if (item === value) {
+                    alert("이미 등록된 태그입니다.")
+                    flag = false;
+                }
+            })
+            return flag;
+        }
+
+        const delete_tag_word = (value) => {
+            tag_arr = tag_arr.filter(item => item !== value);
+            var delete_divs = document.querySelectorAll('#delete_tag');
+            delete_divs.forEach((item, index, array) => {
+                var delete_div = item.parentElement
+                var tag_string_div = document.querySelector('#tag_string');
+
+                if (item.textContent == value) {
+                    tag_string_div.removeChild(delete_div);
+                }
+            })
+        }
+
+        function onclickSave() {
+            var insertUrl = 'http://localhost:8080/insert';
 
             var cate = document.getElementsByName('storeCate');
             var storeCate;
@@ -25,10 +113,24 @@
             }
             var storeName = document.getElementById('storeName').value;
             var storeAddr = document.getElementById('storeAddr').value;
-            var storeTag = document.getElementById('storeTag').value;
+            var convertTag = tag_arr;
+
+            if (storeName == '') {
+                alert("업체명을 입력 할 것");
+                return false;
+            } else if (storeAddr == '') {
+                alert("주소를 입력 할 것");
+                return false;
+            } else if (convertTag == null || convertTag.length < 1) {
+                alert("태그를 추가 할 것");
+                return false;
+            } else if (document.querySelector('.startRadio__box input:checked + .startRadio__img') == null) {
+                alert("별점 체크 할 것");
+                return false;
+            }
             var storeStar = document.querySelector('.startRadio__box input:checked + .startRadio__img').textContent;
 
-            var json_data = { storeCate: storeCate, storeName: storeName, storeAddr: storeAddr, storeTag: storeTag, storeStar: storeStar };
+            var json_data = { storeCate: storeCate, storeName: storeName, storeAddr: storeAddr, convertTag: convertTag, storeStar: storeStar };
 
             fetch(insertUrl, {
                 method: 'POST',
@@ -50,6 +152,11 @@
             var box = document.getElementById("mybox");
             box.style['backgroundColor'] = "yellow";
         }
+
+        function onSearchAddr() {
+            window.open("/components/kakao_keyword.html", "PopupWin", "width=600,height=700");
+        }
+
     </script>
 
 </head>
@@ -126,7 +233,10 @@
                                     </p>
                                     <div class="control">
                                         <input class="input" type="text" name="storeAddr" id="storeAddr"
-                                            placeholder="Text input" style="width: 750px;">
+                                            placeholder="주소찾기 버튼 ㄱㄱ" style="width: 750px;" readonly>
+                                    </div>
+                                    <div class="control">
+                                        <button onclick="onSearchAddr();">주소찾기</button>
                                     </div>
                                 </div>
                             </div>
@@ -139,9 +249,15 @@
                                     </p>
                                     <div class="control">
                                         <input class="input" type="text" name="storeTag" id="storeTag"
-                                            placeholder="Text input" style="width: 750px;">
+                                            placeholder="태그 최대 4개 까지 추가" style="width: 750px;" list="tags">
+                                        <datalist id="tags">
+                                        </datalist>
                                     </div>
                                 </div>
+                            </div>
+                        </nav>
+                        <nav class="level">
+                            <div class="level-item" id="tag_string">
                             </div>
                         </nav>
 
