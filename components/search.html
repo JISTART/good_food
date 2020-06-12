@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
     <link rel="stylesheet" href="/common.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <style type="text/css">
+        .notification {
+            padding: 1.25rem 2.5rem 1.25rem 1rem;
+        }  
+    </style>
     <script>
         var arr = [];
         var input_string = "";
@@ -18,13 +23,20 @@
             onSearch();
             api_select_words();
             document.querySelector('input[list="tags"]').addEventListener('keypress', function (e) {
+                
                 if (e.key === 'Enter' && e.target.value !== "") {
-                    input_dropdown_words_click(e.target.value);
-                    e.target.value = '';
+                    if(e.target.value !== e.target.value.trim() && e.target.value.trim() == ""){
+                        e.target.value = e.target.value.trim();
+                        return false; 
+                    }else{
+                        input_dropdown_words_click(e.target.value.trim());
+                        e.target.value = '';
+                    }
                 }
             })
             document.querySelector('#tag_add').addEventListener('click', function (e) {
                 var input_form = document.querySelector('input[list="tags"]');
+                input_form.value = input_form.value.replace(' ','');
                 if (input_form.value !== "") {
                     input_dropdown_words_click(input_form.value);
                     input_form.value = '';
@@ -42,16 +54,48 @@
             })
         }
 
-        const input_dropdown_words_set = () => {
+        const input_dropdown_words_set = (value, gubun) => {
             var datalist_words = document.querySelector('#tags');
-            arr.forEach((item, index) => {
-                var option_word = document.createElement('option');
-                option_word.value = item;
-                option_word.innerHTML = item;
-                option_word.addEventListener("click", function () {
-                });
-                datalist_words.appendChild(option_word);
-            })
+            if(value == undefined){
+                arr.forEach((item, index) => {
+                    var option_word = document.createElement('option');
+                    option_word.value = item;
+                    option_word.innerHTML = item;
+                    option_word.addEventListener("click", function () {
+                    });
+                    datalist_words.appendChild(option_word);
+                })
+            }else {
+                if(gubun == "del"){
+                    while( datalist_words.hasChildNodes()){
+                        datalist_words.removeChild(datalist_words.firstChild);
+                    }
+                    arr = arr.filter(item => item != value); 
+                    arr.forEach((item, index) => {
+                    var option_word = document.createElement('option');
+                    option_word.value = item;
+                    option_word.innerHTML = item;
+                    option_word.addEventListener("click", function () {
+                    });
+                    datalist_words.appendChild(option_word);
+                })
+                }else {
+                    arr.push(value);
+                    arr.sort();
+                    while( datalist_words.hasChildNodes()){
+                        datalist_words.removeChild(datalist_words.firstChild);
+                    }
+
+                    arr.forEach((item, index) => {
+                    var option_word = document.createElement('option');
+                    option_word.value = item;
+                    option_word.innerHTML = item;
+                    option_word.addEventListener("click", function () {
+                    });
+                    datalist_words.appendChild(option_word);
+                    });
+                }
+            }
 
         }
         const input_dropdown_words_click = (value) => {
@@ -59,23 +103,37 @@
             var box_form = document.querySelector('#tag_string');
             var tags_string = "";
             var exist_flag = false;
-            exist_flag = check_tag_exist(value);
-            if (!exist_flag) {
-                return false;
-            }
+            // exist_flag = check_tag_exist(value);
+            // if (!exist_flag) {
+            //     return false;
+            // }
+            console.log("value")
+            console.log(value)
             if (tag_arr.length == 4) {
                 alert("태그는 4개까지만 등록 가능합니다.");
                 return false;
             }
-            tag_arr.push(input_form.value);
+            input_dropdown_words_set(value, "del");
+
+            tag_arr.push(value);
+            console.log(tag_arr);
             tag_arr.forEach(item => {
                 var tag_string = "";
+                // tag_string += '<div>';
+                // tag_string += '<span class="tag is-black" id="delete_tag">' + item + '</span>';
+                // tag_string += '<span class="icon is-small">';
+                // tag_string += '<button class="delete" aria-label="close" onclick="delete_tag_word(\'' + item + '\');">';
+                // tag_string += '</button>';
+                // tag_string += '</span>&nbsp;&nbsp';
+                // tag_string += '</div>';
+
                 tag_string += '<div>';
-                tag_string += '<span class="tag is-black" id="delete_tag">' + item + '</span>';
+                tag_string += '<button class="button is-outlined" id="delete_tag" onclick="delete_tag_word(\'' + item + '\');">';
+                tag_string += '<span>'+item+'</span>';
                 tag_string += '<span class="icon is-small">';
-                tag_string += '<button class="delete" aria-label="close" onclick="delete_tag_word(\'' + item + '\');">';
-                tag_string += '</button>';
-                tag_string += '</span>&nbsp;&nbsp';
+                tag_string += '<i class="fas fa-times"></i>';
+                tag_string += '</span>';
+                tag_string += '</button>&nbsp;&nbsp';
                 tag_string += '</div>';
 
                 tags_string += tag_string;
@@ -84,16 +142,17 @@
             input_form.value = "";
         }
 
-        const check_tag_exist = (value) => {
-            var flag = true;
-            tag_arr.forEach(item => {
-                if (item === value) {
-                    alert("이미 등록된 태그입니다.")
-                    flag = false;
-                }
-            })
-            return flag;
-        }
+        // const check_tag_exist = (value) => {
+        //     var flag = true;
+        //     tag_arr.forEach(item => {
+        //         if (item === value) {
+        //             alert("이미 등록된 태그입니다.")
+        //             input_dropdown_words_set(value, "del");
+        //             flag = false;
+        //         }
+        //     })
+        //     return flag;
+        // }
         const delete_tag_word = (value) => {
             tag_arr = tag_arr.filter(item => item !== value);
             var delete_divs = document.querySelectorAll('#delete_tag');
@@ -103,6 +162,7 @@
 
                 if (item.textContent == value) {
                     tag_string_div.removeChild(delete_div);
+                    input_dropdown_words_set(value, "add");
                 }
             })
         }
@@ -152,7 +212,7 @@
                         else if (i.storeStar == '4') { width = "80%"; }
                         else if (i.storeStar == '4.5') { width = "91%"; }
                         else if (i.storeStar == '5') { width = "100%"; }
-                        list_string += '<div class="column is-multiline is-one-quarter" style="width:20%;" id="listChild">',
+                        list_string += '<div class="column is-multiline is-one-quarter" style="width:300px;" id="listChild">',
                             list_string += '<div class="card">',
                             list_string += '<div class="card-image">',
                             list_string += '<figure class="image is-4by3"><img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image"></figure></div>',
@@ -214,9 +274,9 @@
 
                             </datalist>
                         </div>
-                        <div class="level-center">
+                        <!-- <div class="level-center">
                             <p class="level-item"><a class="button is-light" id="tag_add">추가</a></p>
-                        </div>
+                        </div> -->
                         <div class="level-center">
                             <p class="level-item"><a class="button is-dark" onclick="onSearch();">검색</a></p>
                         </div>
@@ -226,7 +286,7 @@
                     <div class="level-item">
                         <div class="level-center">
                             <div class="columns is-multiline is-mobile" id="listArea"
-                                style="width: 76%; box-sizing:unset;">
+                                style="width: 1450px; box-sizing:unset;">
                             </div>
                         </div>
                     </div>
