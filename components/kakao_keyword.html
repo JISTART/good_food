@@ -79,6 +79,7 @@
 
             // 마커에 클릭이벤트를 등록합니다
             kakao.maps.event.addListener(marker, "mouseover", function () {
+                console.log(JSON.stringify(place));
                 // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
                 infowindow.setContent("<div style=\"padding:5px;font-size:12px;\">" + JSON.stringify(place) + "</div>");
                 infowindow.open(map, marker);
@@ -95,14 +96,17 @@
                 ddiv.innerHTML = "";
                 html = "";
                 html += `<h3>선택 주소 : ${place.road_address_name} </h3>`;
-                html += `<button onclick="gogo('${place.road_address_name}');">선택</button>`;
+                html += `<button onclick="gogo('${place.road_address_name}','${place.place_url}','${place.place_name}');">선택</button>`;
                 ddiv.innerHTML = html;
             });
 
         }
 
-        function gogo(addr) {
+        function gogo(addr, url, cwalImg) {
+            alert(cwalImg);
             window.opener.document.getElementById("storeAddr").value = addr;
+            window.opener.document.getElementById("storeSiteUrl").value = url;
+            window.opener.document.getElementById("cwalImg").value = cwalImg;
             window.close();
         }
 

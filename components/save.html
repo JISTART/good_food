@@ -113,6 +113,8 @@
             }
             var storeName = document.getElementById('storeName').value;
             var storeAddr = document.getElementById('storeAddr').value;
+            var storeSiteUrl = document.getElementById('storeSiteUrl').value;
+            var cwalImg = document.getElementById('cwalImg').value;
             var convertTag = tag_arr;
 
             if (storeName == '') {
@@ -130,7 +132,7 @@
             }
             var storeStar = document.querySelector('.startRadio__box input:checked + .startRadio__img').textContent;
 
-            var json_data = { storeCate: storeCate, storeName: storeName, storeAddr: storeAddr, convertTag: convertTag, storeStar: storeStar };
+            var json_data = { storeCate: storeCate, storeName: storeName, storeAddr: storeAddr, convertTag: convertTag, storeStar: storeStar, storeSiteUrl: storeSiteUrl, cwalImg: cwalImg };
 
             fetch(insertUrl, {
                 method: 'POST',
@@ -234,6 +236,8 @@
                                     <div class="control">
                                         <input class="input" type="text" name="storeAddr" id="storeAddr"
                                             placeholder="주소찾기 버튼 ㄱㄱ" style="width: 750px;" readonly>
+                                        <input type="hidden" name="storeSiteUrl" id="storeSiteUrl">
+                                        <input type="hidden" name="cwalImg" id="cwalImg">
                                     </div>
                                     <div class="control">
                                         <button onclick="onSearchAddr();">주소찾기</button>
