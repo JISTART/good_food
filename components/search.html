@@ -11,7 +11,7 @@
     <style type="text/css">
         .notification {
             padding: 1.25rem 2.5rem 1.25rem 1rem;
-        }  
+        }
     </style>
     <script>
         var arr = [];
@@ -23,12 +23,12 @@
             onSearch();
             api_select_words();
             document.querySelector('input[list="tags"]').addEventListener('keypress', function (e) {
-                
+
                 if (e.key === 'Enter' && e.target.value !== "") {
-                    if(e.target.value !== e.target.value.trim() && e.target.value.trim() == ""){
+                    if (e.target.value !== e.target.value.trim() && e.target.value.trim() == "") {
                         e.target.value = e.target.value.trim();
-                        return false; 
-                    }else{
+                        return false;
+                    } else {
                         input_dropdown_words_click(e.target.value.trim());
                         e.target.value = '';
                     }
@@ -36,7 +36,7 @@
             })
             document.querySelector('#tag_add').addEventListener('click', function (e) {
                 var input_form = document.querySelector('input[list="tags"]');
-                input_form.value = input_form.value.replace(' ','');
+                input_form.value = input_form.value.replace(' ', '');
                 if (input_form.value !== "") {
                     input_dropdown_words_click(input_form.value);
                     input_form.value = '';
@@ -56,7 +56,7 @@
 
         const input_dropdown_words_set = (value, gubun) => {
             var datalist_words = document.querySelector('#tags');
-            if(value == undefined){
+            if (value == undefined) {
                 arr.forEach((item, index) => {
                     var option_word = document.createElement('option');
                     option_word.value = item;
@@ -65,34 +65,34 @@
                     });
                     datalist_words.appendChild(option_word);
                 })
-            }else {
-                if(gubun == "del"){
-                    while( datalist_words.hasChildNodes()){
+            } else {
+                if (gubun == "del") {
+                    while (datalist_words.hasChildNodes()) {
                         datalist_words.removeChild(datalist_words.firstChild);
                     }
-                    arr = arr.filter(item => item != value); 
+                    arr = arr.filter(item => item != value);
                     arr.forEach((item, index) => {
-                    var option_word = document.createElement('option');
-                    option_word.value = item;
-                    option_word.innerHTML = item;
-                    option_word.addEventListener("click", function () {
-                    });
-                    datalist_words.appendChild(option_word);
-                })
-                }else {
+                        var option_word = document.createElement('option');
+                        option_word.value = item;
+                        option_word.innerHTML = item;
+                        option_word.addEventListener("click", function () {
+                        });
+                        datalist_words.appendChild(option_word);
+                    })
+                } else {
                     arr.push(value);
                     arr.sort();
-                    while( datalist_words.hasChildNodes()){
+                    while (datalist_words.hasChildNodes()) {
                         datalist_words.removeChild(datalist_words.firstChild);
                     }
 
                     arr.forEach((item, index) => {
-                    var option_word = document.createElement('option');
-                    option_word.value = item;
-                    option_word.innerHTML = item;
-                    option_word.addEventListener("click", function () {
-                    });
-                    datalist_words.appendChild(option_word);
+                        var option_word = document.createElement('option');
+                        option_word.value = item;
+                        option_word.innerHTML = item;
+                        option_word.addEventListener("click", function () {
+                        });
+                        datalist_words.appendChild(option_word);
                     });
                 }
             }
@@ -103,12 +103,6 @@
             var box_form = document.querySelector('#tag_string');
             var tags_string = "";
             var exist_flag = false;
-            // exist_flag = check_tag_exist(value);
-            // if (!exist_flag) {
-            //     return false;
-            // }
-            console.log("value")
-            console.log(value)
             if (tag_arr.length == 4) {
                 alert("태그는 4개까지만 등록 가능합니다.");
                 return false;
@@ -119,17 +113,9 @@
             console.log(tag_arr);
             tag_arr.forEach(item => {
                 var tag_string = "";
-                // tag_string += '<div>';
-                // tag_string += '<span class="tag is-black" id="delete_tag">' + item + '</span>';
-                // tag_string += '<span class="icon is-small">';
-                // tag_string += '<button class="delete" aria-label="close" onclick="delete_tag_word(\'' + item + '\');">';
-                // tag_string += '</button>';
-                // tag_string += '</span>&nbsp;&nbsp';
-                // tag_string += '</div>';
-
                 tag_string += '<div>';
                 tag_string += '<button class="button is-outlined" id="delete_tag" onclick="delete_tag_word(\'' + item + '\');">';
-                tag_string += '<span>'+item+'</span>';
+                tag_string += '<span>' + item + '</span>';
                 tag_string += '<span class="icon is-small">';
                 tag_string += '<i class="fas fa-times"></i>';
                 tag_string += '</span>';
@@ -142,17 +128,6 @@
             input_form.value = "";
         }
 
-        // const check_tag_exist = (value) => {
-        //     var flag = true;
-        //     tag_arr.forEach(item => {
-        //         if (item === value) {
-        //             alert("이미 등록된 태그입니다.")
-        //             input_dropdown_words_set(value, "del");
-        //             flag = false;
-        //         }
-        //     })
-        //     return flag;
-        // }
         const delete_tag_word = (value) => {
             tag_arr = tag_arr.filter(item => item !== value);
             var delete_divs = document.querySelectorAll('#delete_tag');
@@ -178,29 +153,6 @@
                 body: JSON.stringify(tag_arr),
                 headers: { 'Content-Type': 'application/json' }
             }).then(res => res.json())
-                // .then(response => {
-                //     response.forEach(i => {
-                //         if (i.storeStar == '1') { width = "20%"; }
-                //         if (i.storeStar == '1.5') { width = "31%"; }
-                //         else if (i.storeStar == '2') { width = "40%"; }
-                //         else if (i.storeStar == '2.5') { width = "51%"; }
-                //         else if (i.storeStar == '3') { width = "60%"; }
-                //         else if (i.storeStar == '3.5') { width = "71%"; }
-                //         else if (i.storeStar == '4') { width = "80%"; }
-                //         else if (i.storeStar == '4.5') { width = "91%"; }
-                //         else if (i.storeStar == '5') { width = "100%"; }
-                //         list_string += '<div class="column is-multiline is-one-quarter" style="width:21%;" id="listChild">',
-                //             list_string += '<div class="card">',
-                //             list_string += '<header class="card-header">',
-                //             list_string += '<p class="card-header-title">' + i.storeName + '</p></header>',
-                //             list_string += '<div class="card-content"><div class="content">' + i.storeAddr + '<br />#' + i.storeTag + '</div></div>',
-                //             list_string += '<footer class="card-footer level"><div class="level-item"><div class="level-center">',
-                //             list_string += '<div class="wrap-star"><div class="star-rating"><span style ="width:' + width + '"></span></div></div>',
-                //             list_string += '</div></div></footer></div></div>'
-                //     }),
-                //         list_area.innerHTML = list_area.innerHTML + list_string
-                // }
-                // )
                 .then(response => {
                     response.forEach(i => {
                         if (i.storeStar == '1') { width = "20%"; }
@@ -215,10 +167,10 @@
                         list_string += '<div class="column is-multiline is-one-quarter" style="width:300px;" id="listChild">',
                             list_string += '<div class="card">',
                             list_string += '<div class="card-image">',
-                            list_string += '<figure class="image is-4by3"><img src="' + i.storeImg + '" alt="Placeholder image"></figure></div>',
+                            list_string += '<figure class="image is-4by3"><a href="' + i.storeSiteUrl + '"><img src="' + i.storeImg + '" alt="Placeholder image"></a></figure></div>',
                             list_string += '<div class="card-content"><div class="media"><div class="media-left">',
                             list_string += '<figure class="image is-48x48"><img src="' + i.storeImg + '" alt="Placeholder image"></figure></div>',
-                            list_string += '<div class="media-content"><p class="title is-4">' + i.storeName + '</p></div></div>',
+                            list_string += '<a href="' + i.storeSiteUrl + '"><div class="media-content"><p class="title is-4">' + i.storeName + '</p></div></a></div>',
                             list_string += '<div class="content">' + i.storeAddr + '<br/>#' + i.storeTag + '</div>',
                             list_string += '<div class="wrap-star"><div class="star-rating"><span style ="width:' + width + '"></span></div></div>',
                             list_string += '</div></div></div>'
@@ -234,20 +186,20 @@
 
 <body>
     <div class="container">
-        <section class="hero notification">
+        <section class="hero notification is-black">
             <div class="hero-head">
                 <nav class="level">
                     <div class="level-left">
                         <div class="level-item">
                             <p class="subtitle is-2">
-                                <strong>GOOD FOOD</strong>
+                                <strong style="color: white;">GOOD FOOD</strong>
                             </p>
                         </div>
                     </div>
                 </nav>
             </div>
         </section>
-        <section class="hero notification is-white is-light ">
+        <section class="hero notification is-white ">
             <div class="hero-head">
                 <nav class="level">
                     <div class="level-item">
@@ -274,9 +226,6 @@
 
                             </datalist>
                         </div>
-                        <!-- <div class="level-center">
-                            <p class="level-item"><a class="button is-light" id="tag_add">추가</a></p>
-                        </div> -->
                         <div class="level-center">
                             <p class="level-item"><a class="button is-dark" onclick="onSearch();">검색</a></p>
                         </div>
