@@ -15,7 +15,6 @@
     </style>
     <script>
         var arr = [];
-        var input_string = "";
         var tag_string = "";
         var tag_arr = [];
         var list_string = "";
@@ -107,8 +106,9 @@
             // if (!exist_flag) {
             //     return false;
             // }
-            console.log("value")
-            console.log(value)
+            for(i in tag_arr){
+                if(tag_arr[i] == value) return false;
+            }
             if (tag_arr.length == 4) {
                 alert("태그는 4개까지만 등록 가능합니다.");
                 return false;
@@ -116,7 +116,6 @@
             input_dropdown_words_set(value, "del");
 
             tag_arr.push(value);
-            console.log(tag_arr);
             tag_arr.forEach(item => {
                 var tag_string = "";
                 // tag_string += '<div>';
@@ -203,6 +202,7 @@
                 // )
                 .then(response => {
                     response.forEach(i => {
+                        var cate = '';
                         if (i.storeStar == '1') { width = "20%"; }
                         if (i.storeStar == '1.5') { width = "31%"; }
                         else if (i.storeStar == '2') { width = "40%"; }
@@ -212,16 +212,19 @@
                         else if (i.storeStar == '4') { width = "80%"; }
                         else if (i.storeStar == '4.5') { width = "91%"; }
                         else if (i.storeStar == '5') { width = "100%"; }
+                        i.storeCate == '1' ? cate='음식':cate='카페';
                         list_string += '<div class="column is-multiline is-one-quarter" style="width:300px;" id="listChild">',
                             list_string += '<div class="card">',
                             list_string += '<div class="card-image">',
                             list_string += '<figure class="image is-4by3"><img src="' + i.storeImg + '" alt="Placeholder image"></figure></div>',
                             list_string += '<div class="card-content"><div class="media"><div class="media-left">',
-                            list_string += '<figure class="image is-48x48"><img src="' + i.storeImg + '" alt="Placeholder image"></figure></div>',
+                            list_string += '<span class="tag is-light"><p class="subtitle is-6">' + cate + '</p></span>',
+                            list_string += '<figure class="image is-48x48"><img src="' + i.storeImg + '" alt="Placeholder image" style="height:45px;"></figure></div>',
                             list_string += '<div class="media-content"><p class="title is-4">' + i.storeName + '</p></div></div>',
                             list_string += '<div class="content">' + i.storeAddr + '<br/>#' + i.storeTag + '</div>',
                             list_string += '<div class="wrap-star"><div class="star-rating"><span style ="width:' + width + '"></span></div></div>',
                             list_string += '</div></div></div>'
+
                     }),
                         list_area.innerHTML = list_area.innerHTML + list_string
                 }
