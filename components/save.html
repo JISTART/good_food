@@ -198,7 +198,7 @@
                         history.back(-1);
                     } else {
                         alert('등록실패하였습니다.');
-                        history.back(-1);
+                        // history.back(-1);
                     }
                 })
                 .catch(error => console.log('Error:', error));
@@ -218,21 +218,21 @@
 
 <body>
     <div class="container">
-        <section class="hero notification">
+        <section class="hero notification is-black">
             <div class="hero-head">
                 <nav class="level">
                     <!-- Left side -->
                     <div class="level-left">
                         <div class="level-item">
                             <p class="subtitle is-2">
-                                <strong>GOOD FOOD</strong>
+                                <strong style="color: white;">GOOD FOOD</strong>
                             </p>
                         </div>
                     </div>
                 </nav>
             </div>
         </section>
-        <section class="hero notification is-white is-light ">
+        <section class="hero notification is-white ">
             <div class="hero-head">
                 <nav class="level">
                     <div class="level-item">
