@@ -18,8 +18,9 @@
         var tag_string = "";
         var tag_arr = [];
         var list_string = "";
+        var pageIndex = 1;
         document.addEventListener("DOMContentLoaded", function (event) {
-            onSearch();
+            onSearch(pageIndex);
             api_select_words();
             document.querySelector('input[list="tags"]').addEventListener('keypress', function (e) {
 
@@ -33,14 +34,14 @@
                     }
                 }
             })
-            document.querySelector('#tag_add').addEventListener('click', function (e) {
-                var input_form = document.querySelector('input[list="tags"]');
-                input_form.value = input_form.value.replace(' ', '');
-                if (input_form.value !== "") {
-                    input_dropdown_words_click(input_form.value);
-                    input_form.value = '';
-                }
-            })
+            // document.querySelector('#tag_add').addEventListener('click', function (e) {
+            //     var input_form = document.querySelector('input[list="tags"]');
+            //     input_form.value = input_form.value.replace(' ', '');
+            //     if (input_form.value !== "") {
+            //         input_dropdown_words_click(input_form.value);
+            //         input_form.value = '';
+            //     }
+            // })
         })
 
         const api_select_words = () => {
@@ -143,15 +144,16 @@
             })
         }
 
-        function onSearch() {
+        async function onSearch(pageIndex) {
             var searchUrl = 'http://localhost:8080/search';
             var list_area = document.querySelector("#listArea");
             var width = "";
             list_area.innerHTML = "";
             list_string = "";
-            fetch(searchUrl, {
+            var data_json = { strArr: tag_arr, pageIndex: pageIndex };
+            await fetch(searchUrl, {
                 method: 'POST',
-                body: JSON.stringify(tag_arr),
+                body: JSON.stringify(data_json),
                 headers: { 'Content-Type': 'application/json' }
             }).then(res => res.json())
                 .then(response => {
@@ -172,15 +174,64 @@
                             list_string += '<div class="card-image">',
                             list_string += '<figure class="image is-4by3"><a href="' + i.storeSiteUrl + '"><img src="' + i.storeImg + '" alt="Placeholder image"></a></figure></div>',
                             list_string += '<div class="card-content"><div class="media"><div class="media-left">',
-                            list_string += '<span class="tag is-light"><p class="subtitle is-6">' + cate + '</p></span>',
-                            list_string += '<figure class="image is-48x48"><img src="' + i.storeImg + '" alt="Placeholder image"></figure></div>',
-                            list_string += '<a href="' + i.storeSiteUrl + '"><div class="media-content"><p class="title is-4">' + i.storeName + '</p></div></a></div>',
+                            list_string += '<span class="tag is-black"><p class="subtitle is-6"><strong style="color:white;">' + cate + '</strong></p></span>',
+                            list_string += '</div><a href="' + i.storeSiteUrl + '"><div class="media-content"><p class="title is-4">' + i.storeName + '</p></div></a></div>',
                             list_string += '<div class="content">' + i.storeAddr + '<br/>#' + i.storeTag + '</div>',
                             list_string += '<div class="wrap-star"><div class="star-rating"><span style ="width:' + width + '"></span></div></div>',
                             list_string += '</div></div></div>'
 
                     }),
+                        list_string += '<div class="column is-multiline is-half" id="moreBtn" style="margin-left:255px;"><button class="button is-fullwidth is-light" onclick="moreList(' + Number(pageIndex + 1) + ');">더보기</button></div>',
                         list_area.innerHTML = list_area.innerHTML + list_string
+                }
+                )
+                .catch(error => console.log('Error:', error));
+
+        }
+
+        async function moreList(pageIndex) {
+            var searchUrl = 'http://localhost:8080/moreList';
+            var list_area = document.querySelector("#listArea");
+            var width = "";
+            var data_json = { strArr: tag_arr, pageIndex: pageIndex };
+            await fetch(searchUrl, {
+                method: 'POST',
+                body: JSON.stringify(data_json),
+                headers: { 'Content-Type': 'application/json' }
+            }).then(res => res.json())
+                .then(response => {
+                    if (response.length == 0) {
+                        alert('데이터가 더이상 없습니다.');
+                        return;
+                    } else {
+                        response.forEach(i => {
+                            var cate = '';
+                            if (i.storeStar == '1') { width = "20%"; }
+                            if (i.storeStar == '1.5') { width = "31%"; }
+                            else if (i.storeStar == '2') { width = "40%"; }
+                            else if (i.storeStar == '2.5') { width = "51%"; }
+                            else if (i.storeStar == '3') { width = "60%"; }
+                            else if (i.storeStar == '3.5') { width = "71%"; }
+                            else if (i.storeStar == '4') { width = "80%"; }
+                            else if (i.storeStar == '4.5') { width = "91%"; }
+                            else if (i.storeStar == '5') { width = "100%"; }
+                            i.storeCate == '1' ? cate = '음식' : cate = '카페';
+                            list_string += '<div class="column is-multiline is-one-quarter" style="width:300px;" id="listChild">',
+                                list_string += '<div class="card">',
+                                list_string += '<div class="card-image">',
+                                list_string += '<figure class="image is-4by3"><a href="' + i.storeSiteUrl + '"><img src="' + i.storeImg + '" alt="Placeholder image"></a></figure></div>',
+                                list_string += '<div class="card-content"><div class="media"><div class="media-left">',
+                                list_string += '<span class="tag is-black"><p class="subtitle is-6"><strong style="color:white;">' + cate + '</strong></p></span>',
+                                list_string += '</div><a href="' + i.storeSiteUrl + '"><div class="media-content"><p class="title is-4">' + i.storeName + '</p></div></a></div>',
+                                list_string += '<div class="content">' + i.storeAddr + '<br/>#' + i.storeTag + '</div>',
+                                list_string += '<div class="wrap-star"><div class="star-rating"><span style ="width:' + width + '"></span></div></div>',
+                                list_string += '</div></div></div>'
+
+                        }),
+                            list_string += '<div class="column is-multiline is-half" id="moreBtn" style="margin-left:255px;"><button class="button is-fullwidth is-light"  onclick="moreList(' + Number(pageIndex + 1) + ');">더보기</button></div>',
+                            list_area.innerHTML = list_string,
+                            document.querySelector('#moreBtn').remove();
+                    }
                 }
                 )
                 .catch(error => console.log('Error:', error));
@@ -209,10 +260,12 @@
                 <nav class="level">
                     <div class="level-item">
                         <div class="level-center">
-                            <p class="level-item"><a href="/components/search.html" class="button is-danger">검색</a></p>
+                            <p class="level-item"><a href="/components/search.html" class="button is-dark"><strong
+                                        style="color:white;">검색</strong></a></p>
                         </div>
                         <div class="level-center">
-                            <p class="level-item"><a href="/components/save.html" class="button is-success">등록</a></p>
+                            <p class="level-item"><a href="/components/save.html" class="button is-light"><strong
+                                        style="color:black;">등록</strong></a></p>
                         </div>
                     </div>
                 </nav>
@@ -232,7 +285,7 @@
                             </datalist>
                         </div>
                         <div class="level-center">
-                            <p class="level-item"><a class="button is-dark" onclick="onSearch();">검색</a></p>
+                            <p class="level-item"><a class="button is-dark" onclick="onSearch(1);">검색</a></p>
                         </div>
                     </div>
                 </nav>

@@ -17,12 +17,12 @@
         document.addEventListener("DOMContentLoaded", function (event) {
             api_select_words();
             document.querySelector('input[list="tags"]').addEventListener('keypress', function (e) {
-                
+
                 if (e.key === 'Enter' && e.target.value !== "") {
-                    if(e.target.value !== e.target.value.trim() && e.target.value.trim() == ""){
+                    if (e.target.value !== e.target.value.trim() && e.target.value.trim() == "") {
                         e.target.value = e.target.value.trim();
-                        return false; 
-                    }else{
+                        return false;
+                    } else {
                         input_dropdown_words_click(e.target.value.trim());
                         e.target.value = '';
                     }
@@ -42,7 +42,7 @@
 
         const input_dropdown_words_set = (value, gubun) => {
             var datalist_words = document.querySelector('#tags');
-            if(value == undefined){
+            if (value == undefined) {
                 arr.forEach((item, index) => {
                     var option_word = document.createElement('option');
                     option_word.value = item;
@@ -51,34 +51,34 @@
                     });
                     datalist_words.appendChild(option_word);
                 })
-            }else {
-                if(gubun == "del"){
-                    while( datalist_words.hasChildNodes()){
+            } else {
+                if (gubun == "del") {
+                    while (datalist_words.hasChildNodes()) {
                         datalist_words.removeChild(datalist_words.firstChild);
                     }
-                    arr = arr.filter(item => item != value); 
+                    arr = arr.filter(item => item != value);
                     arr.forEach((item, index) => {
-                    var option_word = document.createElement('option');
-                    option_word.value = item;
-                    option_word.innerHTML = item;
-                    option_word.addEventListener("click", function () {
-                    });
-                    datalist_words.appendChild(option_word);
-                })
-                }else {
+                        var option_word = document.createElement('option');
+                        option_word.value = item;
+                        option_word.innerHTML = item;
+                        option_word.addEventListener("click", function () {
+                        });
+                        datalist_words.appendChild(option_word);
+                    })
+                } else {
                     arr.push(value);
                     arr.sort();
-                    while( datalist_words.hasChildNodes()){
+                    while (datalist_words.hasChildNodes()) {
                         datalist_words.removeChild(datalist_words.firstChild);
                     }
 
                     arr.forEach((item, index) => {
-                    var option_word = document.createElement('option');
-                    option_word.value = item;
-                    option_word.innerHTML = item;
-                    option_word.addEventListener("click", function () {
-                    });
-                    datalist_words.appendChild(option_word);
+                        var option_word = document.createElement('option');
+                        option_word.value = item;
+                        option_word.innerHTML = item;
+                        option_word.addEventListener("click", function () {
+                        });
+                        datalist_words.appendChild(option_word);
                     });
                 }
             }
@@ -90,13 +90,9 @@
             var box_form = document.querySelector('#tag_string');
             var tags_string = "";
             var exist_flag = false;
-            // exist_flag = check_tag_exist(value);
-            // if (!exist_flag) {
-            //     return false;
-            // }
 
-            for(i in tag_arr){
-                if(tag_arr[i] == value) return false;
+            for (i in tag_arr) {
+                if (tag_arr[i] == value) return false;
             }
             if (tag_arr.length == 4) {
                 alert("태그는 4개까지만 등록 가능합니다.");
@@ -107,17 +103,9 @@
             tag_arr.push(value);
             tag_arr.forEach(item => {
                 var tag_string = "";
-                // tag_string += '<div>';
-                // tag_string += '<span class="tag is-black" id="delete_tag">' + item + '</span>';
-                // tag_string += '<span class="icon is-small">';
-                // tag_string += '<button class="delete" aria-label="close" onclick="delete_tag_word(\'' + item + '\');">';
-                // tag_string += '</button>';
-                // tag_string += '</span>&nbsp;&nbsp';
-                // tag_string += '</div>';
-
                 tag_string += '<div>';
                 tag_string += '<button class="button is-outlined" id="delete_tag" onclick="delete_tag_word(\'' + item + '\');">';
-                tag_string += '<span>'+item+'</span>';
+                tag_string += '<span>' + item + '</span>';
                 tag_string += '<span class="icon is-small">';
                 tag_string += '<i class="fas fa-times"></i>';
                 tag_string += '</span>';
@@ -129,17 +117,6 @@
             box_form.innerHTML = tags_string;
             input_form.value = "";
         }
-
-        // const check_tag_exist = (value) => {
-        //     var flag = true;
-        //     tag_arr.forEach(item => {
-        //         if (item === value) {
-        //             alert("이미 등록된 태그입니다.")
-        //             flag = false;
-        //         }
-        //     })
-        //     return flag;
-        // }
 
         const delete_tag_word = (value) => {
             tag_arr = tag_arr.filter(item => item !== value);
@@ -221,7 +198,6 @@
         <section class="hero notification is-black">
             <div class="hero-head">
                 <nav class="level">
-                    <!-- Left side -->
                     <div class="level-left">
                         <div class="level-item">
                             <p class="subtitle is-2">
@@ -237,10 +213,12 @@
                 <nav class="level">
                     <div class="level-item">
                         <div class="level-center">
-                            <p class="level-item"><a href="/components/search.html" class="button is-danger">검색</a></p>
+                            <p class="level-item"><a href="/components/search.html" class="button is-dark"><strong
+                                        style="color:white;">검색</strong></a></p>
                         </div>
                         <div class="level-center">
-                            <p class="level-item"><a href="/components/save.html" class="button is-success">등록</a></p>
+                            <p class="level-item"><a href="/components/save.html" class="button is-light"><strong
+                                        style="color:black;">등록</strong></a></p>
                         </div>
                     </div>
                 </nav>
@@ -376,7 +354,8 @@
                 <nav class="level">
                     <div class="level-item">
                         <div class="level-center">
-                            <p class="level-item"><a onclick="onclickSave();" class="button is-link">등록</a></p>
+                            <p class="level-item"><a onclick="onclickSave();" class="button is-light"><strong
+                                        style="color:black;">등록</strong></a></p>
                         </div>
                     </div>
                 </nav>
